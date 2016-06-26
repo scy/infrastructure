@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+aptkey_salt='../keys/public/apt.saltstack.asc'
+
 msg() {
 	prefix=''
 	[ -n "$myname" ] && prefix="$myname: "
