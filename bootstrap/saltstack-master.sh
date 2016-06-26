@@ -1,16 +1,10 @@
 #!/bin/sh
 set -e
 
+myname='bootstrap saltstack master'
+. ./common-code.sh
+
 gpgkey='../keys/public/saltstack.asc'
-
-msg() {
-	printf 'bootstrap saltstack master: %s\n' "$*"
-}
-
-die() {
-	msg "$*" >&2
-	exit 1
-}
 
 [ -r "$gpgkey" ] || die "cannot find or read OpenPGP key: $gpgkey"
 
