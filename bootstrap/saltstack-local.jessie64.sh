@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Install curl and sudo first, then, as root or normal user:
+# curl -L https://github.com/scy/infrastructure/archive/master.tar.gz | tar zxv && cd infrastructure-master/bootstrap && ./saltstack-local.jessie64.sh && cd ../.. && rm -r infrastructure-master
+
 myname='saltstack-local.jessie64'
 . ./common-code.sh
 
@@ -18,11 +21,9 @@ sudo apt-get update
 msg 'installing git and salt-common'
 sudo apt-get install -y git salt-common
 
-msg 'copying essential Salt configuration'
-sudo cp \
-	../config/salt/minion.d/no-master.conf \
-	../config/salt/minion.d/sha512.conf \
-	/etc/salt/minion.d
+msg 'initializing essential configuration'
+salt-local --file-root=../salt state.apply salt.sha512
+salt-local --file-root=../salt state.apply salt.local-only
 
 msg 'cloning the infrastructure repository'
 salt-local --file-root=../salt state.apply infra-repo
