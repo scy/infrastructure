@@ -13,7 +13,8 @@
 				"Groups": [
 					{"Ref": "CloudFormationUsers"},
 					{"Ref": "CloudFrontAdmins"},
-					{"Ref": "DNSAdmins"}
+					{"Ref": "DNSAdmins"},
+					{"Ref": "timlivesAdmins"}
 				]
 			}
 		},
@@ -47,6 +48,16 @@
 					"arn:aws:iam::aws:policy/AmazonRoute53DomainsReadOnlyAccess",
 					{"Ref": "DomainInformation"},
 					{"Ref": "ZoneManagement"}
+				]
+			}
+		},
+
+		"timlivesAdmins": {
+			"Type": "AWS::IAM::Group",
+			"Properties": {
+				"GroupName": "timlivesAdmins",
+				"ManagedPolicyArns": [
+					{"Ref": "timlivesManagement"}
 				]
 			}
 		},
@@ -149,6 +160,22 @@
 							"ec2:DescribeRegions"
 						],
 						"Resource": "*"
+					}]
+				}
+			}
+		},
+
+		"timlivesManagement": {
+			"Type": "AWS::IAM::ManagedPolicy",
+			"Properties": {
+				"Description": "Permissions required to manage the \"timlives\" project (TLE).",
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [{
+						"Sid": "CreateAndDeleteRedirectBucket",
+						"Effect": "Allow",
+						"Action": ["s3:CreateBucket", "s3:DeleteBucket", "s3:*BucketWebsite"],
+						"Resource": "arn:aws:s3:::www.timliv.es"
 					}]
 				}
 			}
