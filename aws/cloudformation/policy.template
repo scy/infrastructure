@@ -19,6 +19,16 @@
 			}
 		},
 
+		"timlivesDeploy": {
+			"Type": "AWS::IAM::User",
+			"Properties": {
+				"UserName": "timlives-deploy",
+				"Groups": [
+					{"Ref": "timlivesDeployers"}
+				]
+			}
+		},
+
 		"CloudFormationUsers": {
 			"Type": "AWS::IAM::Group",
 			"Properties": {
@@ -58,6 +68,16 @@
 				"GroupName": "timlivesAdmins",
 				"ManagedPolicyArns": [
 					{"Ref": "timlivesManagement"}
+				]
+			}
+		},
+
+		"timlivesDeployers": {
+			"Type": "AWS::IAM::Group",
+			"Properties": {
+				"GroupName": "timlivesDeployers",
+				"ManagedPolicyArns": [
+					{"Ref": "timlivesDeployment"}
 				]
 			}
 		},
@@ -176,6 +196,34 @@
 						"Effect": "Allow",
 						"Action": ["s3:CreateBucket", "s3:DeleteBucket", "s3:*BucketWebsite"],
 						"Resource": "arn:aws:s3:::www.timliv.es"
+					}]
+				}
+			}
+		},
+
+		"timlivesDeployment": {
+			"Type": "AWS::IAM::ManagedPolicy",
+			"Properties": {
+				"Description": "Permissions required to deploy the \"timlives\" project (TLE) to S3.",
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [{
+						"Sid": "AccessContentBucket",
+						"Effect": "Allow",
+						"Action": [
+							"s3:CreateBucket",
+							"s3:ListBucket"
+						],
+						"Resource": "arn:aws:s3:::timliv.es"
+					}, {
+						"Sid": "AccessContent",
+						"Effect": "Allow",
+						"Action": [
+							"s3:ListObjects",
+							"s3:GetObject", "s3:GetObjectAcl", "s3:PutObject", "s3:PutObjectAcl",
+							"s3:DeleteObject"
+						],
+						"Resource": "arn:aws:s3:::timliv.es/*"
 					}]
 				}
 			}
