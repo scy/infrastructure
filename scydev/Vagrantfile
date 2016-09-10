@@ -15,8 +15,8 @@ Vagrant.configure("2") do |config|
 
   # Since this file here lives in the infrastructure repo, simply supply the
   # repo as a shared folder in order to do the provisioning.
-  config.vm.synced_folder "../", "/root/infrastructure",
-    create: true, owner: "root", group: "root"
+  config.vm.synced_folder "../", "/etc/infrastructure",
+    create: true, owner: "root", group: "root", mount_options: ["ro"]
 
   # Let Salt do the rest.
   config.vm.provision "shell", path: "provision.sh"
