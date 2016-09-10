@@ -1,0 +1,18 @@
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # “contrib” means “with VirtualBox shared folders. Official Debian image.
+  config.vm.box = "debian/contrib-jessie64"
+
+  # ASCII 115: s, 100: d -> scydev
+  config.vm.network "private_network", ip: "10.115.110.23"
+
+  config.vm.provider "virtualbox" do |vb|
+    # Fix DNS resolving. http://serverfault.com/q/453185
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+
+  # Let Salt do the rest.
+  config.vm.provision "shell", path: "provision.sh"
+
+end
