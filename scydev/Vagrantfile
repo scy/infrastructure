@@ -1,6 +1,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
+
   # “contrib” means “with VirtualBox shared folders. Official Debian image.
   config.vm.box = "debian/contrib-jessie64"
 
@@ -11,6 +12,11 @@ Vagrant.configure("2") do |config|
     # Fix DNS resolving. http://serverfault.com/q/453185
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
+
+  # Since this file here lives in the infrastructure repo, simply supply the
+  # repo as a shared folder in order to do the provisioning.
+  config.vm.synced_folder "../", "/root/infrastructure",
+    create: true, owner: "root", group: "root"
 
   # Let Salt do the rest.
   config.vm.provision "shell", path: "provision.sh"
