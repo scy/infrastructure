@@ -3,6 +3,7 @@ set -e
 
 # Don't use the default Vagrant box hostname.
 hostnamectl set-hostname scydev
+sed -i -e 's/contrib-jessie/scydev/g' /etc/hosts
 
 # The following commands are basically what bootstrap/saltstack-local.jessie64.sh suggests.
 
