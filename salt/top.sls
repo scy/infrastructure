@@ -5,3 +5,6 @@ base:
     - infra-repo
   'G@os:Debian':
     - default-packages.debian-utils
+  'scydev.*':
+    - packages.docker
+    - hosts.scydev
