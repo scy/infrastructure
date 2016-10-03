@@ -1,2 +1,6 @@
 # The backup directory created by deploy-config.sh
 /etc~/
+
+# Configuration files generated from hosts.txt
+/etc/dnsmasq.hosts
+/etc/dnsmasq.staticdhcp
