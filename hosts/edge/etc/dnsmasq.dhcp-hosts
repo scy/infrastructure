@@ -1,0 +1,49 @@
+#  10 -  19  Main Machines
+10:9a:dd:a6:d4:6e,10.73.17.10,crys
+10:9a:dd:42:09:7d,10.73.17.11,crys-e
+f8:16:54:86:2a:22,10.73.17.12,seven
+                        # .13,seven-e
+00:23:6c:8d:78:f2,10.73.17.14,hypro
+
+#  20 -  29  Aux Machines
+5c:f8:a1:61:9c:e3,10.73.17.20,cb1
+
+#  30 -  39  Experimental and Chaotic Machines
+b8:27:eb:c0:95:6c,10.73.17.31,frickel1
+
+#  60 -  89  Mobile Devices (Tim)
+5c:70:a3:37:11:1f,10.73.17.60,kate
+
+#  90 -  99  Mobile Devices (others)
+7c:11:be:0b:8d:52,10.73.17.91,iphone
+b4:f0:ab:f2:13:84,10.73.17.92,ipad
+
+#
+# 100 - 199  Dynamic Range (DHCP Pool)
+#
+
+# 200 - 209  Servers
+00:11:32:5c:1e:90,10.73.17.200,mem
+
+# 210 - 219  Home Entertainment
+6c:ad:f8:ac:8f:9d,10.73.17.210,wozicast
+
+# 220 - 229  Wireless Music
+00:0e:58:ea:9c:c6,10.73.17.220,sonos-bridge
+00:0e:58:77:22:96,10.73.17.221,sonos-bad
+b8:e9:37:8f:37:ac,10.73.17.222,sonos-balkon
+00:0e:58:a6:46:8e,10.73.17.223,sonos-mixer
+b8:e9:37:8c:45:30,10.73.17.224,sonos-schlafzi
+00:0e:58:f9:54:0e,10.73.17.225,sonos-wozi
+
+# 230 - 239  Printers
+00:15:99:95:89:21,10.73.17.230,colas
+
+# 240 - 249  Home Automation and IoT
+b8:27:eb:4b:58:df,10.73.17.240,b17pi
+00:24:e4:00:d3:c8,10.73.17.241,scale
+
+# 250 - 254  Uplink
+00:24:fe:3d:31:98,10.73.17.252,fritz
+64:70:02:3e:be:6e,10.73.17.253,wifi
+00:19:db:43:2e:b9,10.73.17.254,edge
