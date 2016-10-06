@@ -13,6 +13,7 @@
 				"Groups": [
 					{"Ref": "CloudFormationUsers"},
 					{"Ref": "CloudFrontAdmins"},
+					{"Ref": "CodeCommitAdmins"},
 					{"Ref": "DNSAdmins"},
 					{"Ref": "InboxAdmins"},
 					{"Ref": "timlivesAdmins"}
@@ -57,6 +58,16 @@
 				"ManagedPolicyArns": [
 					"arn:aws:iam::aws:policy/CloudFrontReadOnlyAccess",
 					{"Ref": "CloudFrontManagement"}
+				]
+			}
+		},
+
+		"CodeCommitAdmins": {
+			"Type": "AWS::IAM::Group",
+			"Properties": {
+				"GroupName": "CodeCommitAdmins",
+				"ManagedPolicyArns": [
+					"arn:aws:iam::aws:policy/AWSCodeCommitPowerUser"
 				]
 			}
 		},
