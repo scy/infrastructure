@@ -30,6 +30,16 @@
 			}
 		},
 
+		"memBackup": {
+			"Type": "AWS::IAM::User",
+			"Properties": {
+				"UserName": "memBackup",
+				"Groups": [
+					{"Ref": "MemBackupUsers"}
+				]
+			}
+		},
+
 		"CloudFormationUsers": {
 			"Type": "AWS::IAM::Group",
 			"Properties": {
@@ -69,6 +79,16 @@
 					"arn:aws:iam::aws:policy/AmazonRoute53DomainsReadOnlyAccess",
 					{"Ref": "DomainInformation"},
 					{"Ref": "ZoneManagement"}
+				]
+			}
+		},
+
+		"MemBackupUsers": {
+			"Type": "AWS::IAM::Group",
+			"Properties": {
+				"GroupName": "MemBackupUsers",
+				"ManagedPolicyArns": [
+					{"Ref": "MemBackupManagement"}
 				]
 			}
 		},
@@ -191,6 +211,30 @@
 							"ec2:DescribeRegions"
 						],
 						"Resource": "*"
+					}]
+				}
+			}
+		},
+
+		"MemBackupManagement": {
+			"Type": "AWS::IAM::ManagedPolicy",
+			"Properties": {
+				"Description": "Full access to the mem backup bucket.",
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [{
+						"Sid": "ListBuckets",
+						"Effect": "Allow",
+						"Action": "s3:listAllMyBuckets",
+						"Resource": "arn:aws:s3:::*"
+					}, {
+						"Sid": "ManageBackupBucket",
+						"Effect": "Allow",
+						"Action": "s3:*",
+						"Resource": [
+							"arn:aws:s3:::scy-backup-mem",
+							"arn:aws:s3:::scy-backup-mem/*"
+						]
 					}]
 				}
 			}
