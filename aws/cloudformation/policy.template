@@ -15,7 +15,6 @@
 					{"Ref": "CloudFrontAdmins"},
 					{"Ref": "CodeCommitAdmins"},
 					{"Ref": "DNSAdmins"},
-					{"Ref": "InboxAdmins"},
 					{"Ref": "timlivesAdmins"}
 				]
 			}
@@ -27,16 +26,6 @@
 				"UserName": "timlives-deploy",
 				"Groups": [
 					{"Ref": "timlivesDeployers"}
-				]
-			}
-		},
-
-		"InboxSubmitter": {
-			"Type": "AWS::IAM::User",
-			"Properties": {
-				"UserName": "inbox-submitter",
-				"Groups": [
-					{"Ref": "InboxSubmitters"}
 				]
 			}
 		},
@@ -80,26 +69,6 @@
 					"arn:aws:iam::aws:policy/AmazonRoute53DomainsReadOnlyAccess",
 					{"Ref": "DomainInformation"},
 					{"Ref": "ZoneManagement"}
-				]
-			}
-		},
-
-		"InboxAdmins": {
-			"Type": "AWS::IAM::Group",
-			"Properties": {
-				"GroupName": "InboxAdmins",
-				"ManagedPolicyArns": [
-					{"Ref": "InboxManagement"}
-				]
-			}
-		},
-
-		"InboxSubmitters": {
-			"Type": "AWS::IAM::Group",
-			"Properties": {
-				"GroupName": "InboxSubmitters",
-				"ManagedPolicyArns": [
-					{"Ref": "InboxSubmission"}
 				]
 			}
 		},
@@ -222,47 +191,6 @@
 							"ec2:DescribeRegions"
 						],
 						"Resource": "*"
-					}]
-				}
-			}
-		},
-
-		"InboxManagement": {
-			"Type": "AWS::IAM::ManagedPolicy",
-			"Properties": {
-				"Description": "Permissions to manage the file inbox resources.",
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [{
-						"Sid": "CreateAndDeleteInboxBucket",
-						"Effect": "Allow",
-						"Action": ["s3:CreateBucket", "s3:DeleteBucket"],
-						"Resource": "arn:aws:s3:::scy-inbox"
-					}]
-				}
-			}
-		},
-
-		"InboxSubmission": {
-			"Type": "AWS::IAM::ManagedPolicy",
-			"Properties": {
-				"Description": "Permissions to write into the inbox S3 bucket.",
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [{
-						"Sid": "ListBuckets",
-						"Effect": "Allow",
-						"Action": ["s3:ListAllMyBuckets"],
-						"Resource": "arn:aws:s3:::*"
-					}, {
-						"Sid": "AccessInboxBucket",
-						"Effect": "Allow",
-						"Action": [
-							"s3:ListObjects",
-							"s3:GetObject", "s3:GetObjectAcl", "s3:PutObject", "s3:PutObjectAcl",
-							"s3:DeleteObject"
-						],
-						"Resource": "arn:aws:s3:::scy-inbox/*"
 					}]
 				}
 			}
