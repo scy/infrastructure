@@ -1,0 +1,126 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Users and access policies for my AWS account.
+
+
+
+Resources:
+
+  scy:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: scy
+      Groups:
+      - !Ref CloudFormationUsers
+      - !Ref CloudFrontAdmins
+      - !Ref CodeCommitAdmins
+      - !Ref DNSAdmins
+
+  CloudFormationUsers:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: CloudFormationUsers
+      ManagedPolicyArns:
+      - !Ref CloudFormationAccess
+
+  CloudFrontAdmins:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: CloudFrontAdmins
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/CloudFrontReadOnlyAccess
+      - !Ref CloudFrontManagement
+
+  CodeCommitAdmins:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: CodeCommitAdmins
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AWSCodeCommitPowerUser
+
+  DNSAdmins:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: DNSAdmins
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonRoute53DomainsReadOnlyAccess
+      - !Ref DomainInformation
+      - !Ref ZoneManagement
+
+  CloudFormationAccess:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Provides nearly full access to CloudFormation.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Sid: AllowFullAccess
+          Effect: Allow
+          Action: [ "cloudformation:*" ]
+          Resource: "*"
+        - Sid: DenyDeleting
+          Effect: Deny
+          Action: [ "cloudformation:DeleteStack" ]
+          Resource: "*"
+        - Sid: DenyUpdatingOrCreatingImportantStacks
+          Effect: Deny
+          Action: [ "cloudformation:UpdateStack", "cloudformation:CreateStack" ]
+          Resource: [ "arn:aws:cloudformation:*:*:stack/x-*/*", "arn:aws:cloudformation:*:*:stack/x-*" ]
+        - Sid: CreateTemplateBucket
+          Effect: Allow
+          Action: s3:CreateBucket
+          Resource: arn:aws:s3:::cf-templates-*
+        - Sid: UseTemplateBucket
+          Effect: Allow
+          Action: [ "s3:GetObject", "s3:PutObject" ]
+          Resource: [ "arn:aws:s3:::cf-templates-*", "arn:aws:s3:::cloudformation-templates-*" ]
+        - Sid: ListKeyPairs
+          Effect: Allow
+          Action: [ "ec2:DescribeKeyPairs" ]
+          Resource: "*"
+
+  CloudFrontManagement:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Provides management access to CloudFront.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Sid: ListACMCertificates
+          Effect: Allow
+          Action:
+          - "cloudfront:CreateDistribution"
+          - "cloudfront:UpdateDistribution"
+          - "cloudfront:DeleteDistribution"
+          Resource: "*"
+
+  DomainInformation:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: A bit of supplementary domain information that's not included in AWS's provided AmazonRoute53DomainsReadOnlyAccess.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Sid: RetrieveInformation
+          Effect: Allow
+          Action:
+          - "route53domains:CheckDomainAvailability"
+          - "route53:ViewBilling"
+          Resource: "*"
+
+  ZoneManagement:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Creation, modification and deletion of hosted zones and associated permissions. Not including traffic policies and health checks, because they're currently not used.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Sid: ManageZones
+          Effect: Allow
+          Action:
+          - "route53:*HostedZone*"
+          - "route53:*ResourceRecordSets"
+          - "route53:GetChange"
+          - "route53:ChangeTagsForResource"
+          - "ec2:DescribeVpcs"
+          - "ec2:DescribeRegions"
+          Resource: "*"
