@@ -14,28 +14,7 @@
 					{"Ref": "CloudFormationUsers"},
 					{"Ref": "CloudFrontAdmins"},
 					{"Ref": "CodeCommitAdmins"},
-					{"Ref": "DNSAdmins"},
-					{"Ref": "timlivesAdmins"}
-				]
-			}
-		},
-
-		"timlivesDeploy": {
-			"Type": "AWS::IAM::User",
-			"Properties": {
-				"UserName": "timlives-deploy",
-				"Groups": [
-					{"Ref": "timlivesDeployers"}
-				]
-			}
-		},
-
-		"memBackup": {
-			"Type": "AWS::IAM::User",
-			"Properties": {
-				"UserName": "memBackup",
-				"Groups": [
-					{"Ref": "MemBackupUsers"}
+					{"Ref": "DNSAdmins"}
 				]
 			}
 		},
@@ -79,36 +58,6 @@
 					"arn:aws:iam::aws:policy/AmazonRoute53DomainsReadOnlyAccess",
 					{"Ref": "DomainInformation"},
 					{"Ref": "ZoneManagement"}
-				]
-			}
-		},
-
-		"MemBackupUsers": {
-			"Type": "AWS::IAM::Group",
-			"Properties": {
-				"GroupName": "MemBackupUsers",
-				"ManagedPolicyArns": [
-					{"Ref": "MemBackupManagement"}
-				]
-			}
-		},
-
-		"timlivesAdmins": {
-			"Type": "AWS::IAM::Group",
-			"Properties": {
-				"GroupName": "timlivesAdmins",
-				"ManagedPolicyArns": [
-					{"Ref": "timlivesManagement"}
-				]
-			}
-		},
-
-		"timlivesDeployers": {
-			"Type": "AWS::IAM::Group",
-			"Properties": {
-				"GroupName": "timlivesDeployers",
-				"ManagedPolicyArns": [
-					{"Ref": "timlivesDeployment"}
 				]
 			}
 		},
@@ -211,74 +160,6 @@
 							"ec2:DescribeRegions"
 						],
 						"Resource": "*"
-					}]
-				}
-			}
-		},
-
-		"MemBackupManagement": {
-			"Type": "AWS::IAM::ManagedPolicy",
-			"Properties": {
-				"Description": "Full access to the mem backup bucket.",
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [{
-						"Sid": "ListBuckets",
-						"Effect": "Allow",
-						"Action": "s3:listAllMyBuckets",
-						"Resource": "arn:aws:s3:::*"
-					}, {
-						"Sid": "ManageBackupBucket",
-						"Effect": "Allow",
-						"Action": "s3:*",
-						"Resource": [
-							"arn:aws:s3:::scy-backup-mem",
-							"arn:aws:s3:::scy-backup-mem/*"
-						]
-					}]
-				}
-			}
-		},
-
-		"timlivesManagement": {
-			"Type": "AWS::IAM::ManagedPolicy",
-			"Properties": {
-				"Description": "Permissions required to manage the \"timlives\" project (TLE).",
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [{
-						"Sid": "CreateAndDeleteRedirectBucket",
-						"Effect": "Allow",
-						"Action": ["s3:CreateBucket", "s3:DeleteBucket", "s3:*BucketWebsite"],
-						"Resource": "arn:aws:s3:::www.timliv.es"
-					}]
-				}
-			}
-		},
-
-		"timlivesDeployment": {
-			"Type": "AWS::IAM::ManagedPolicy",
-			"Properties": {
-				"Description": "Permissions required to deploy the \"timlives\" project (TLE) to S3.",
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [{
-						"Sid": "AccessContentBucket",
-						"Effect": "Allow",
-						"Action": [
-							"s3:CreateBucket",
-							"s3:ListBucket"
-						],
-						"Resource": "arn:aws:s3:::timliv.es"
-					}, {
-						"Sid": "AccessContent",
-						"Effect": "Allow",
-						"Action": [
-							"s3:ListObjects",
-							"s3:GetObject", "s3:GetObjectAcl", "s3:PutObject", "s3:PutObjectAcl",
-							"s3:DeleteObject"
-						],
-						"Resource": "arn:aws:s3:::timliv.es/*"
 					}]
 				}
 			}
